@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 
 @Dao
@@ -44,4 +45,8 @@ interface UserDao {
 
     @Query("SELECT * FROM Users WHERE country IN (:countries)")
     suspend fun findUsersByCountry(countries: List<String>): List<UserEntity>
+
+    @Transaction
+    @Query("SELECT * FROM Users")
+    suspend fun getUsersWithPosts(): List<UserWithPosts>
 }
