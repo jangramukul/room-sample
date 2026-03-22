@@ -3,6 +3,7 @@ package com.wise.code.room.sample.data.local
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -26,7 +27,25 @@ data class UserEntity(
     @Embedded val address: Address, // Flatten the columns in this table from Address model
 )
 
-@Entity(tableName = "post")
+
+/**
+ * Foreign Key means Enforces Constraint -
+ * 1) owner_user_id from PostEntity must exist in UserEntity
+ * 2) Can't insert Post without user
+ * 3) When user is delected, It deletes the Posts too (ForeignKey.CASCADE)
+ */
+@Entity(
+    tableName = "post",
+    foreignKeys = [
+        ForeignKey(
+            entity = UserEntity::class,
+            parentColumns = ["id"], // UserEntity
+            childColumns = ["owner_user_id"], //PostEntity
+            onDelete = ForeignKey.CASCADE,
+        )
+    ],
+    indices = [Index(value = ["owner_user_id"])] // Add Index here for performance as ForeignKey is added
+)
 data class PostEntity(
     @PrimaryKey val id: Int,
     val content: String,
