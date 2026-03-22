@@ -24,6 +24,24 @@ interface UserDao {
     @Query("SELECT first_name, last_name FROM users")
     suspend fun getUsersName(): List<UserEntitySubset>
 
-    @Query("SELECT * FROM users WHERE age > :minAge")
+    @Query("SELECT * FROM users WHERE age > :minAge LIMIT 1")
     suspend fun getUsersOlderThan(minAge: Int): List<UserEntity>
+
+    @Query("SELECT * FROM users WHERE age BETWEEN :minAge AND :maxAge")
+    suspend fun getUsersBetween(minAge: Int, maxAge: Int): List<UserEntity>
+
+    @Query("SELECT * FROM users WHERE first_name LIKE :searchQuery OR last_name LIKE :searchQuery")
+    suspend fun findUserByName(searchQuery: String)
+
+    @Query("SELECT * FROM users WHERE first_name LIKE '%' || :searchQuery || '%' OR last_name LIKE '%' || :searchQuery || '%'")
+    suspend fun searchUserByName(searchQuery: String)
+
+    @Query("SELECT * FROM users ORDER BY age ASC")
+    suspend fun getUsersOrderedByAge(): List<UserEntity>
+
+    @Query("SELECT * FROM users ORDER BY first_name ASC, last_name ASC")
+    suspend fun getUsersOrderedByName(): List<UserEntity>
+
+    @Query("SELECT * FROM Users WHERE country IN (:countries)")
+    suspend fun findUsersByCountry(countries: List<String>): List<UserEntity>
 }

@@ -15,6 +15,7 @@ data class UserEntity(
     @ColumnInfo(name = "first_name") val firstName: String,
     @ColumnInfo(name = "last_name") val lastName: String,
     @ColumnInfo(name = "age") val age: Int,
+    @ColumnInfo(name = "country") val country: String,
     val phoneNumber: String, // Even without @ColumnInfo, This will be column in table
     @Ignore val address: String, // Ignore this as column
 )
