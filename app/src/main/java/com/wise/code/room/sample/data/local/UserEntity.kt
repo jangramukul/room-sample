@@ -8,7 +8,10 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "users",
-    indices = [Index(value = ["first_name"], unique = true)]
+    indices = [
+        Index(value = ["first_name", "last_name"], unique = true),
+        Index(value = ["age"]),
+    ]
 )
 data class UserEntity(
     @PrimaryKey val id: Int,
@@ -19,3 +22,4 @@ data class UserEntity(
     val phoneNumber: String, // Even without @ColumnInfo, This will be column in table
     @Ignore val address: String, // Ignore this as column
 )
+
